@@ -21,59 +21,56 @@ export default {
   props: {
     items: Array,
     listIdx: Number,
-    item: Object,
+    item: Object
   },
-  data() {
+  data () {
     return {
       // newQuantity: this.item.quantity,
       // newColor: this.item.color,
       // newActive: this.item.active,
       errors: {
-        quantity: null,
-      },
+        quantity: null
+      }
     }
   },
   computed: {
     isActive: {
-      get() {
+      get () {
         return this.item.active
       },
-      set(value) {
-        this.item.active = value
-        this.onChange()
-      },
+      set (value) {
+        this.onChange({ active: value })
+      }
     },
     itemQuantity: {
-      get() {
+      get () {
         return this.item.quantity
       },
-      set(value) {
-        this.item.quantity = value
-        this.onChange()
-      },
+      set (value) {
+        this.onChange({ quantity: value })
+      }
     },
     itemColor: {
-      get() {
+      get () {
         return this.item.color
       },
-      set(value) {
-        this.item.color = value
-        this.onChange()
-      },
+      set (value) {
+        this.onChange({ color: value })
+      }
     },
-    itemIdx() {
+    itemIdx () {
       return this.items.findIndex((item) => item.id === this.item.id)
-    },
+    }
   },
   methods: {
-    quantityIsValid() {
+    quantityIsValid () {
       const isValid = !(this.newQuantity < 0)
       this.errors.quantity = isValid
         ? null
         : 'Количество должно быть не меньше 0'
       return isValid
     },
-    onChange() {
+    onChange (newValues) {
       if (this.quantityIsValid()) {
         this.$store.commit('changeParams', {
           listIdx: this.listIdx,
@@ -81,10 +78,11 @@ export default {
           quantity: this.item.quantity,
           color: this.item.color,
           active: this.item.active,
+          ...newValues
         })
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
