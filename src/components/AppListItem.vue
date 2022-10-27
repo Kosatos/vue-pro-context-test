@@ -21,70 +21,70 @@ export default {
   props: {
     items: Array,
     listIdx: Number,
-    item: Object
+    item: Object,
   },
-  data () {
+  data() {
     return {
-      newQuantity: this.item.quantity,
-      newColor: this.item.color,
-      newActive: this.item.active,
+      // newQuantity: this.item.quantity,
+      // newColor: this.item.color,
+      // newActive: this.item.active,
       errors: {
-        quantity: null
-      }
+        quantity: null,
+      },
     }
   },
   computed: {
     isActive: {
-      get () {
+      get() {
         return this.item.active
       },
-      set (value) {
-        this.newActive = value
+      set(value) {
+        this.item.active = value
         this.onChange()
-      }
+      },
     },
     itemQuantity: {
-      get () {
+      get() {
         return this.item.quantity
       },
-      set (value) {
-        this.newQuantity = value
+      set(value) {
+        this.item.quantity = value
         this.onChange()
-      }
+      },
     },
     itemColor: {
-      get () {
+      get() {
         return this.item.color
       },
-      set (value) {
-        this.newColor = value
+      set(value) {
+        this.item.color = value
         this.onChange()
-      }
+      },
     },
-    itemIdx () {
+    itemIdx() {
       return this.items.findIndex((item) => item.id === this.item.id)
-    }
+    },
   },
   methods: {
-    quantityIsValid () {
+    quantityIsValid() {
       const isValid = !(this.newQuantity < 0)
       this.errors.quantity = isValid
         ? null
         : 'Количество должно быть не меньше 0'
       return isValid
     },
-    onChange () {
+    onChange() {
       if (this.quantityIsValid()) {
         this.$store.commit('changeParams', {
           listIdx: this.listIdx,
           itemIdx: this.itemIdx,
-          quantity: this.newQuantity,
-          color: this.newColor,
-          active: this.newActive
+          quantity: this.item.quantity,
+          color: this.item.color,
+          active: this.item.active,
         })
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

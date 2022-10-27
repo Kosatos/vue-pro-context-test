@@ -19,7 +19,7 @@
       <li
         class="shuffle-list__item"
         :style="`background-color: ${item.color}`"
-        v-for="(item, idx) in shuffleArr"
+        v-for="(item, idx) in shuffleItems"
         :key="idx"
         @click="() => onRemove(item.idx)"
       ></li>
@@ -32,21 +32,21 @@ import { mapGetters } from 'vuex'
 import AppSortItem from './AppSortItem.vue'
 export default {
   props: {
-    list: Object
+    list: Object,
   },
-  data () {
+  data() {
     return {
       isSort: true,
-      shuffleArr: []
+      // shuffleArr: [],
     }
   },
 
   computed: {
     ...mapGetters(['allLists']),
-    listIdx () {
+    listIdx() {
       return this.allLists.findIndex((list) => list.id === this.list.id)
     },
-    shuffleItems () {
+    shuffleItems() {
       let shuffle = []
 
       // проверяем элементы на активность
@@ -64,7 +64,7 @@ export default {
           const idx = this.list.items.indexOf(item)
           itemsArr.push({
             color: item.color,
-            idx: idx
+            idx: idx,
           })
           i++
         }
@@ -76,27 +76,24 @@ export default {
       // перемешиваем элементы массива
       shuffle.sort(() => Math.random() - 0.5)
       return shuffle
-    }
+    },
   },
   methods: {
-    onShuffle () {
+    onShuffle() {
       this.isSort = !this.isSort
-      if (this.isSort) {
-        return
-      }
-      this.shuffleArr = this.shuffleItems
+      // this.shuffleArr = this.shuffleItems
     },
-    onRemove (itemIdx) {
+    onRemove(itemIdx) {
       this.$store.commit('reduceQuantity', {
         listIdx: this.listIdx,
-        itemIdx: itemIdx
+        itemIdx: itemIdx,
       })
       this.shuffleArr = this.shuffleItems
-    }
+    },
   },
   components: {
-    AppSortItem
-  }
+    AppSortItem,
+  },
 }
 </script>
 
